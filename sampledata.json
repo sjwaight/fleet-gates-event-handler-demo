@@ -1,0 +1,25 @@
+{
+    "resourceInfo": {
+        "id": "/subscriptions/xxxxxxx/resourceGroups/sw-test-01/providers/Microsoft.ContainerService/fleets/flt-mgr-03/gates/4f906ef6-6828-4f5f-acc1-941a4d088a16",
+        "name": "4f906ef6-6828-4f5f-acc1-941a4d088a16",
+        "type": "Microsoft.ContainerService/fleets/gates",
+        "properties": {
+            "displayName": "stage-1-pre-approval",
+            "gateType": "Approval",
+            "provisioningState": "Succeeded",
+            "state": "Pending",
+            "target": {
+                "id": "/subscriptions/xxxxxxx/resourceGroups/sw-test-01/providers/Microsoft.ContainerService/fleets/flt-mgr-03/updateRuns/test09",
+                "updateRunProperties": {
+                    "name": "test09",
+                    "stage": "stage-01",
+                    "timing": "Before"
+                }
+            }
+        }
+    },
+    "operationalInfo": {
+        "resourceEventTime": "2025-09-23T11:36:42.4769436+00:00"
+    },
+    "apiVersion": "2025-04-01-preview"
+}

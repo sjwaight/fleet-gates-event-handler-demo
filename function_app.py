@@ -15,21 +15,22 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
 
     logging.info(json.dumps(event_data))
 
-    # target_id = event_data["data"]["resourceInfo"]["properties"]["target"]["id"]
-    # parts = target_id.split('/')
+    target_id = event_data["resourceInfo"]["properties"]["target"]["id"]
+    parts = target_id.split('/')
 
     # # Extract the values
-    # subscription_id = parts[2]  # subscriptions/{subscription_id}
-    # resource_group = parts[4]   # resourceGroups/{resource_group}
-    # fleet_name = parts[8]       # fleets/{fleet_name}
+    subscription_id = parts[2]  # subscriptions/{subscription_id}
+    resource_group = parts[4]   # resourceGroups/{resource_group}
+    fleet_name = parts[8]       # fleets/{fleet_name}
 
     # data = azeventgrid.get_json()
 
     # # read the name value for the gate
-    # gate_name_uuid = data["resourceInfo"]["name"]
+    gate_name_uuid = event_data["resourceInfo"]["name"]
 
-    # # perform other functions
+    # # perform other logic here
     # # ....
+    # # call health checks or external services to validate it's OK to proceed
     # # ....
 
     # client = ContainerServiceFleetMgmtClient(
