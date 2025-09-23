@@ -2,8 +2,8 @@ import json
 import logging
 import azure.functions as func
 
-#from azure.identity import DefaultAzureCredential
-#from azure.mgmt.containerservicefleet import ContainerServiceFleetMgmtClient
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.containerservicefleet import ContainerServiceFleetMgmtClient
 
 app = func.FunctionApp()
 
@@ -33,14 +33,17 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
     # # call health checks or external services to validate it's OK to proceed
     # # ....
 
-    # client = ContainerServiceFleetMgmtClient(
-    #   credential=DefaultAzureCredential(),
-    #   subscription_id=subscription_id,
-    # )
+    # Following lines require the Azure Function to be granted appropriate Azure RBAC
+    # permissions to manage the Fleet Manager resources.
 
-    # response = client.gates.begin_update(
-    #   resource_group_name=resource_group,
-    #   fleet_name=fleet_name,
-    #   gate_name=gate_name_uuid,
-    #   properties={"properties": {"state": "Completed"}},
-    # ).result()
+    client = ContainerServiceFleetMgmtClient(
+      credential=DefaultAzureCredential(),
+      subscription_id=subscription_id,
+    )
+
+    response = client.gates.begin_update(
+      resource_group_name=resource_group,
+      fleet_name=fleet_name,
+      gate_name=gate_name_uuid,
+      properties={"properties": {"state": "Completed"}},
+    ).result()
