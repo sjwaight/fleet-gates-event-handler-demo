@@ -12,10 +12,10 @@ app = func.FunctionApp()
 def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
     logging.info('Python EventGrid trigger processed an event')
 
-    # event = json.loads(json.dumps(azeventgrid.get_json()), object_hook=lambda d: SimpleNamespace(**d))
+    event = json.loads(json.dumps(azeventgrid.get_json()), object_hook=lambda d: SimpleNamespace(**d))
 
-    # target_id = event.data.resourceInfo.properties.target.id
-    # parts = target_id.split('/')
+    target_id = event.data.resourceInfo.properties.target.id
+    parts = target_id.split('/')
 
     # # Extract the values
     # subscription_id = parts[2]  # subscriptions/{subscription_id}
