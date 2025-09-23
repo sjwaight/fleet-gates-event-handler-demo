@@ -2,7 +2,6 @@ import json
 import logging
 import azure.functions as func
 
-from types import SimpleNamespace
 from azure.identity import DefaultAzureCredential
 from azure.mgmt.containerservicefleet import ContainerServiceFleetMgmtClient
 
@@ -12,9 +11,9 @@ app = func.FunctionApp()
 def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
     logging.info('Python EventGrid trigger processed an event')
     
-    event = json.loads(json.dumps(azeventgrid.get_json()), object_hook=lambda d: SimpleNamespace(**d))
+    event_data = azeventgrid.get_json()
 
-    target_id = event.data.resourceInfo.properties.target.id
+    target_id = event_data["data"]["resourceInfo"]["properties"]["target"]["id"]
     parts = target_id.split('/')
 
     # # Extract the values
