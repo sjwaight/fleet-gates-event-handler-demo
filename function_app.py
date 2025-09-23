@@ -11,7 +11,7 @@ app = func.FunctionApp()
 @app.event_grid_trigger(arg_name="azeventgrid")
 def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
     logging.info('Python EventGrid trigger processed an event')
-
+    
     event = json.loads(json.dumps(azeventgrid.get_json()), object_hook=lambda d: SimpleNamespace(**d))
 
     target_id = event.data.resourceInfo.properties.target.id
