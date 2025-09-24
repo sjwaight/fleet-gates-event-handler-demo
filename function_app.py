@@ -34,12 +34,12 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
             subscription_id="" #subscription_id
         )
 
-        response = client.gates.begin_update(
-            resource_group_name="",#resource_group,
-            fleet_name="",# fleet_name,
-            gate_name="", #gate_name_uuid,
-            properties={"properties": {"state": "Completed"}}
-        ).result()
+        # response = client.gates.begin_update(
+        #     resource_group_name="",#resource_group,
+        #     fleet_name="",# fleet_name,
+        #     gate_name="", #gate_name_uuid,
+        #     properties={"properties": {"state": "Completed"}}
+        #).result()
         
         logging.info(f"Successfully updated gate {gate_name_uuid} to Completed state")
         
