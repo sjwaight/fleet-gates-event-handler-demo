@@ -4,6 +4,7 @@ import azure.functions as func
 
 from azure.identity import DefaultAzureCredential
 from azure.mgmt.containerservicefleet import ContainerServiceFleetMgmtClient
+from azure.core.exceptions import AzureError
 
 app = func.FunctionApp()
 
@@ -13,37 +14,47 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
     
     event_data = azeventgrid.get_json()
 
-    logging.info(json.dumps(event_data))
+    try:
+        event_data = azeventgrid.get_json()
+        logging.info(json.dumps(event_data))
 
-    target_id = event_data["resourceInfo"]["properties"]["target"]["id"]
-    parts = target_id.split('/')
+        target_id = event_data["resourceInfo"]["properties"]["target"]["id"]
+        parts = target_id.split('/')
 
-    # # Extract the values
-    subscription_id = parts[2]  # subscriptions/{subscription_id}
-    resource_group = parts[4]   # resourceGroups/{resource_group}
-    fleet_name = parts[8]       # fleets/{fleet_name}
+        # Extract the values
+        subscription_id = parts[2]  # subscriptions/{subscription_id}
+        resource_group = parts[4]   # resourceGroups/{resource_group}
+        fleet_name = parts[8]       # fleets/{fleet_name}
 
-    # data = azeventgrid.get_json()
+        gate_name_uuid = event_data["resourceInfo"]["name"]
 
-    # # read the name value for the gate
-    gate_name_uuid = event_data["resourceInfo"]["name"]
-
-    # # perform other logic here
-    # # ....
-    # # call health checks or external services to validate it's OK to proceed
-    # # ....
-
-    # Following lines require the Azure Function to be granted appropriate Azure RBAC
-    # permissions to manage the Fleet Manager resources.
-
-    client = ContainerServiceFleetMgmtClient(
-        credential=DefaultAzureCredential(),
-        subscription_id=subscription_id
+        # Create client and update gate
+        client = ContainerServiceFleetMgmtClient(
+            credential=DefaultAzureCredential(),
+            subscription_id=subscription_id
         )
 
-    response = client.gates.begin_update(
-        resource_group_name=resource_group,
-        fleet_name=fleet_name,
-        gate_name=gate_name_uuid,
-        properties={"properties": {"state": "Completed"}}
+        response = client.gates.begin_update(
+            resource_group_name=resource_group,
+            fleet_name=fleet_name,
+            gate_name=gate_name_uuid,
+            properties={"properties": {"state": "Completed"}}
         ).result()
+        
+        logging.info(f"Successfully updated gate {gate_name_uuid} to Completed state")
+        
+    except KeyError as e:
+        logging.error(f"Missing required field in event data: {e}")
+        # Optionally re-raise if you want the function to fail
+        # raise
+        
+    except IndexError as e:
+        logging.error(f"Error parsing target_id - unexpected format: {e}")
+        
+    except AzureError as e:
+        logging.error(f"Azure API error: {e}")
+        
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        # Optionally re-raise for critical errors
+        # raise
