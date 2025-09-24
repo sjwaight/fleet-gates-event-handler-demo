@@ -29,10 +29,10 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
         gate_name_uuid = event_data["resourceInfo"]["name"]
 
         # Create client and update gate
-        client = ContainerServiceFleetMgmtClient(
-            credential=DefaultAzureCredential(),
-            subscription_id="" #subscription_id
-        )
+        # client = ContainerServiceFleetMgmtClient(
+        #     credential=DefaultAzureCredential(),
+        #     subscription_id="" #subscription_id
+        # )
 
         # response = client.gates.begin_update(
         #     resource_group_name="",#resource_group,
