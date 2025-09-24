@@ -31,13 +31,13 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
         # Create client and update gate
         client = ContainerServiceFleetMgmtClient(
             credential=DefaultAzureCredential(),
-            subscription_id=subscription_id
+            subscription_id="" #subscription_id
         )
 
         response = client.gates.begin_update(
-            resource_group_name=resource_group,
-            fleet_name=fleet_name,
-            gate_name=gate_name_uuid,
+            resource_group_name="",#resource_group,
+            fleet_name="",# fleet_name,
+            gate_name="", #gate_name_uuid,
             properties={"properties": {"state": "Completed"}}
         ).result()
         
