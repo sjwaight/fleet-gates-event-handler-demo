@@ -21,12 +21,12 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
         target_id = event_data["resourceInfo"]["properties"]["target"]["id"]
         parts = target_id.split('/')
 
-        # Extract the values
-        subscription_id = parts[2]  # subscriptions/{subscription_id}
-        resource_group = parts[4]   # resourceGroups/{resource_group}
-        fleet_name = parts[8]       # fleets/{fleet_name}
+        # # Extract the values
+        # subscription_id = parts[2]  # subscriptions/{subscription_id}
+        # resource_group = parts[4]   # resourceGroups/{resource_group}
+        # fleet_name = parts[8]       # fleets/{fleet_name}
 
-        gate_name_uuid = event_data["resourceInfo"]["name"]
+        # gate_name_uuid = event_data["resourceInfo"]["name"]
 
         # Create client and update gate
         # client = ContainerServiceFleetMgmtClient(
@@ -41,7 +41,7 @@ def HandleFleetGateEvent(azeventgrid: func.EventGridEvent):
         #     properties={"properties": {"state": "Completed"}}
         #).result()
         
-        logging.info(f"Successfully updated gate {gate_name_uuid} to Completed state")
+        #logging.info(f"Successfully updated gate {gate_name_uuid} to Completed state")
         
     except KeyError as e:
         logging.error(f"Missing required field in event data: {e}")
